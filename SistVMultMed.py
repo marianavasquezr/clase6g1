@@ -1,3 +1,5 @@
+from datetime import datetime, date
+import re
 class Medicamento:
     def __init__(self):
         self.__nombre = "" 
@@ -148,6 +150,76 @@ class sistemaV:
                 med.asignarLista_Medicamentos([]) #Limpia lista de medicamentos
                 return True  #eliminado con exito
         return False 
+def error():
+    '''Retorna un mensaje de que la ingreso una opcion no es valida '''
+    return "\nIngreso una opción no valida, intente de nuevo.\n"
+
+def valid_int():
+    '''Valida que el dato ingresado sea un numero entero positivo '''
+    while True:
+        num = input(">> ")
+        try:
+            entero = int(num)
+            if entero > 0:
+                return entero
+            else:
+                print("\nIngrese un numero positivo")
+        except ValueError:
+            print("\nIngrese solo numeros enteros, intente de nuevo")
+            
+def valid_float():
+    '''Valida que el dato ingresado sea un numero flotante'''
+    while True:
+        num = input(">> ")
+        try:
+            flotante = float(num)
+            return flotante
+        except ValueError:
+            print("\nIngrese solo numero flotante, intente de nuevo")
+
+
+def valid_letras():
+    '''Valida que el dato ingresado sea de caracteres alfabetico, 
+    incluyendo tildes, mayusculas, minusculas, espacio sin aceptar caracteres especiales o números '''
+    while True:
+        txt = input(">> ")
+        try:
+            if re.match("^[a-zA-Z-ñÑ-áÁéÉíÍóÓúÚ ]*$", txt):
+                return txt
+            else:
+                print("Ingreso caracteres especiales o números")
+        except ValueError:
+            print("\nIngrese solo letras y espacios, intente de nuevo")
+
+def valid_date():
+    '''VSolicita una fecha y valida que esta sea correcta'''
+    while True:
+        print("\nIngrese el día: ")
+        dia = valid_int()
+        
+        print("\nIngrese el mes: ")
+        mes = valid_int()
+        
+        print("\nIngrese el año: ")
+        año = valid_int()
+        
+        if año < 2024:
+            if mes>12:
+                print("\nIngrese la fecha correctamente. Intente de nuevo\n")
+            elif mes == 2 and dia < 28:
+                break
+            elif mes == 1 or mes == 3 or mes == 5 or mes == 7 or mes == 8 or mes == 10 or mes == 12 < 32:
+                break
+            elif mes != 2 and dia < 31:
+                break 
+            else:
+                print("\nIngrese la fecha correctamente. Intente de nuevo\n")
+        else:
+            print("\nIngrese la fecha correctamente. Intente de nuevo\n")
+            
+    fecha = date(año,mes,dia)
+    print("\nFecha: ", fecha.strftime("%Y/%m/%d"))
+    return str(fecha)
 
 def main():
     servicio_hospitalario = sistemaV()
@@ -176,7 +248,8 @@ def main():
                 if servicio_hospitalario.verificarExisteFelino(historia) == False:
                     nombre=input("Ingrese el nombre de la mascota: ")
                     peso=int(input("Ingrese el peso de la mascota: "))
-                    fecha=input("Ingrese la fecha de ingreso (dia/mes/año): ")
+                    print("Ingrese la fecha de ingreso: ")
+                    fecha = valid_date()
                     nm=int(input("Ingrese cantidad de medicamentos: "))
                     lista_med=[]
 
@@ -215,7 +288,8 @@ def main():
                 if servicio_hospitalario.verificarExisteCanino(historia) == False:
                     nombre=input("Ingrese el nombre de la mascota: ")
                     peso=int(input("Ingrese el peso de la mascota: "))
-                    fecha=input("Ingrese la fecha de ingreso (dia/mes/año): ")
+                    print("Ingrese la fecha de ingreso: ")
+                    fecha = valid_date()
                     nm=int(input("Ingrese cantidad de medicamentos: "))
                     lista_med=[]
 
@@ -362,12 +436,3 @@ def main():
 
 if __name__=='__main__':
     main()
-
-
-
-
-
-            
-
-                
-
